@@ -43,12 +43,13 @@ def run_python_file(
         subprocess_result = subprocess.run(command, cwd=abs_working_dir, capture_output=True, text=True, timeout=30)
         return_str = ''
         if subprocess_result.returncode != 0:
-            return_str += f'Process exited with code {subprocess_result.returncode}'
+            return_str += f'Process exited with code {subprocess_result.returncode}\n'
         if not subprocess_result.stdout and not subprocess_result.stderr:
-            return_str += 'No output produced'
-        else:
-            return_str += f'STDOUT: {subprocess_result.stdout}'
-            return_str += f'STDERR: {subprocess_result.stderr}'
+            return_str += 'No output produced\n'
+        if subprocess_result.stdout:
+            return_str += f'STDOUT:\n{subprocess_result.stdout}'
+        if subprocess_result.stderr:
+            return_str += f'STDERR:\n{subprocess_result.stderr}'
         return return_str
     except Exception as e:
         raise OSError(e)

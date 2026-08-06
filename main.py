@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from prompts import system_prompt
-from call_function import available_functions
+from call_function import available_functions, call_function
 
 def main():
     parser = argparse.ArgumentParser(description="Chatbot")
@@ -58,7 +58,11 @@ def generate_content(client: OpenAI, messages: list, include_metadata: bool) -> 
         if tool_call.type != "function":
             continue
         function_args = json.loads(tool_call.function.arguments or "{}")
-        print(f"Calling function: {tool_call.function.name}({function_args})")
+        result_message = call_function(tool_call, include_metadata)
+        if not result_message:
+            raise RuntimeError("Content is missing or empty")
+        if include_metadata:
+            print(f"-> {result_message['content']}")
 
 if __name__ == "__main__":
     main()
