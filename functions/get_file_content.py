@@ -6,7 +6,7 @@ schema_get_file_content = {
     "type": "function",
     "function": {
         "name": "get_file_content",
-        "description": "Reads file content",
+        "description": f"Retrieves the content (at most {MAX_CHARS} characters) of a specified file within the working directory",
         "parameters": {
             "type": "object",
             "properties": {
@@ -15,6 +15,7 @@ schema_get_file_content = {
                     "description": "Path to target file, relative to the working directory (default is the working directory itself)",
                 },
             },
+            "required": ["file_path"]
         },
     },
 }
